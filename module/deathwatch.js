@@ -1,47 +1,42 @@
-// Import Modules
-import { DeathwatchActor } from "./actor/actor.js";
-import { DeathwatchActorSheet } from "./actor/actor-sheet.js";
-import { DeathwatchItem } from "./item/item.js";
-import { DeathwatchItemSheet } from "./item/item-sheet.js";
+/**
+ * module/deathwatch.js
+ * Esqueleto de inicialização compatível com Foundry v13 build 346
+ */
 
-Hooks.once('init', async function() {
+Hooks.once("init", () => {
+  console.log("Deathwatch | Inicializando Deathwatch System (v13 compat)");
 
-  game.deathwatch = {
-    DeathwatchActor,
-    DeathwatchItem
-  };
-
-  /**
-   * Set an initiative formula for the system
-   * @type {String}
-   */
-  CONFIG.Combat.initiative = {
-    formula: "1d10 + @characteristics.ag.bonus",
-    decimals: 0
-  };
-
-  // Define custom Entity classes
-  CONFIG.Actor.entityClass = DeathwatchActor;
-  CONFIG.Item.entityClass = DeathwatchItem;
-
-  // Register sheet application classes
-  Actors.unregisterSheet("core", ActorSheet);
-  Actors.registerSheet("deathwatch", DeathwatchActorSheet, { makeDefault: true });
-  Items.unregisterSheet("core", ItemSheet);
-  Items.registerSheet("deathwatch", DeathwatchItemSheet, { makeDefault: true });
-
-  // If you need to add Handlebars helpers, here are a few useful examples:
-  Handlebars.registerHelper('concat', function() {
-    var outStr = '';
-    for (var arg in arguments) {
-      if (typeof arguments[arg] != 'object') {
-        outStr += arguments[arg];
-      }
-    }
-    return outStr;
+  // Registrar settings como exemplo (adapte conforme necessário)
+  game.settings.register("deathwatch", "exampleSetting", {
+    name: "Deathwatch Example Setting",
+    hint: "Um exemplo de setting para o sistema Deathwatch.",
+    scope: "world",
+    config: true,
+    type: Boolean,
+    default: true,
   });
 
-  Handlebars.registerHelper('toLowerCase', function(str) {
-    return str.toLowerCase();
-  });
+  // Registre sheets customizados aqui (exemplo comentado)
+  // Actors.registerSheet("deathwatch", DeathwatchActorSheet, { makeDefault: true });
+
+  // Preload templates se houver templates handlebars
+  if (typeof loadTemplates === "function") {
+    // Exemplo: loadTemplates(["templates/some-template.hbs"]);
+  }
+});
+
+Hooks.once("ready", async () => {
+  console.log("Deathwatch | Sistema pronto.");
+  // Checagens pós-init (ex: migrar world data)
+  try {
+    // migrationCheck();
+  } catch (err) {
+    console.error("Deathwatch | Erro em ready hook:", err);
+  }
+});
+
+// Exemplo de hook para quando um actor é criado (apenas para evitar erros de API)
+Hooks.on("createActor", (actor, options, userId) => {
+  // lógica se necessário
+  // console.log("Deathwatch | actor criado:", actor.id);
 });

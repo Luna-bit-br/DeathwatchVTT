@@ -27,7 +27,7 @@
   "gridUnits": "m",
   "primaryTokenAttribute": "wounds",
   "secondaryTokenAttribute": "fatigue",
-  "url": "https://gitlab.com/marcoSch/deathwatch-foundryvtt",
+  "url": "https://github.com/Luna-bit-br/DeathwatchVTT",
   "manifest": "https://raw.githubusercontent.com/Luna-bit-br/DeathwatchVTT/main/system.json",
   "download": "https://github.com/Luna-bit-br/DeathwatchVTT/archive/refs/heads/main.zip",
   "license": "LICENSE.txt"

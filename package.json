@@ -1,23 +1,16 @@
 {
-  "name": "deathwatch",
-  "version": "1.0.0",
-  "description": "CSS compiler for the Deathwatch system",
+  "name": "deathwatch-foundryvtt",
+  "version": "0.0.4",
+  "description": "Deathwatch system for Foundry VTT",
+  "main": "module/deathwatch.js",
   "scripts": {
-    "build": "gulp",
-    "compile": "gulp css",
-    "watch": "gulp",
-    "gulp": "gulp"
+    "build": "gulp"
   },
-  "browserslist": [
-    "last 3 versions"
-  ],
-  "author": "Marco",
-  "license": "GPL-3.0-or-later",
-  "private": true,
-  "dependencies": {
-    "gulp": "^4.0.2",
-    "gulp-autoprefixer": "^7.0.1",
-    "gulp-sass": "^4.1.0",
-    "gulp-sourcemaps": "^2.6.5"
+  "devDependencies": {},
+  "foundryvtt": {
+    "system": {
+      "name": "deathwatch",
+      "version": "0.0.4"
+    }
   }
 }

@@ -1,85 +1,44 @@
 /**
- * Deathwatch VTT System — Core module
- * Compatível com Foundry VTT v13 (Build 346)
- * 
- * Estrutura básica e segura de inicialização.
- * Substitua ou expanda conforme necessário (ex: registro de sheets, templates, rolls etc).
+ * Deathwatch VTT System Core
+ * Compatível com Foundry VTT v13 Build 346
  */
 
-class DeathwatchSystem {
-  static ID = "deathwatch";
+import { DeathwatchActor } from "./actor/actor.js";
+import { DeathwatchActorSheet } from "./actor/actor-sheet.js";
+import { DeathwatchItem } from "./item/item.js";
+import { DeathwatchItemSheet } from "./item/item-sheet.js";
+import { registerHandlebarsHelpers } from "./helpers.js";
+import { DEATHWATCH } from "./config.js";
 
-  static async initialize() {
-    console.log("Deathwatch | Inicializando sistema Deathwatch (compatível v13)");
+Hooks.once("init", async function () {
+  console.log("Deathwatch | Inicializando Sistema Deathwatch (v13)");
 
-    // Registrar configurações básicas
-    game.settings.register(this.ID, "enableDebug", {
-      name: "Modo Debug",
-      hint: "Exibe logs detalhados no console para depuração.",
-      scope: "client",
-      config: true,
-      type: Boolean,
-      default: false,
-      onChange: value => console.log(`Deathwatch | Debug: ${value}`)
-    });
+  // Registrar configuração global
+  CONFIG.Deathwatch = DEATHWATCH;
 
-    // Registrar Handlebars helpers (se precisar no futuro)
-    this.registerHandlebarsHelpers();
+  // Registrar classes customizadas
+  CONFIG.Actor.documentClass = DeathwatchActor;
+  CONFIG.Item.documentClass = DeathwatchItem;
 
-    // Pré-carregar templates
-    await this.preloadTemplates();
-  }
+  // Registrar sheets customizadas
+  Actors.unregisterSheet("core", ActorSheet);
+  Actors.registerSheet("deathwatch", DeathwatchActorSheet, { makeDefault: true });
 
-  static registerHandlebarsHelpers() {
-    if (typeof Handlebars !== "undefined") {
-      Handlebars.registerHelper("upper", str => str?.toUpperCase() ?? "");
-      Handlebars.registerHelper("lower", str => str?.toLowerCase() ?? "");
-      Handlebars.registerHelper("eq", (a, b) => a === b);
-      Handlebars.registerHelper("neq", (a, b) => a !== b);
-    }
-  }
+  Items.unregisterSheet("core", ItemSheet);
+  Items.registerSheet("deathwatch", DeathwatchItemSheet, { makeDefault: true });
 
-  static async preloadTemplates() {
-    const templatePaths = [
-      // Exemplo: "systems/deathwatch/templates/actor-sheet.hbs",
-      // Exemplo: "systems/deathwatch/templates/item-sheet.hbs"
-    ];
-    return loadTemplates(templatePaths);
-  }
+  // Helpers de template
+  registerHandlebarsHelpers();
 
-  static ready() {
-    console.log("Deathwatch | Sistema carregado e pronto!");
-  }
-}
+  // Pré-carregar templates
+  await loadTemplates([
+    "systems/deathwatch/templates/actor-sheet.hbs",
+    "systems/deathwatch/templates/item-sheet.hbs",
+  ]);
 
-// -----------------------------------------------------------
-// Hooks
-// -----------------------------------------------------------
-
-Hooks.once("init", async function() {
-  await DeathwatchSystem.initialize();
+  console.log("Deathwatch | Sistema inicializado com sucesso.");
 });
 
-Hooks.once("ready", function() {
-  DeathwatchSystem.ready();
-});
-
-// -----------------------------------------------------------
-// Exemplo: Registro de Classes (descomente se possuir arquivos)
-// -----------------------------------------------------------
-
-// CONFIG.Actor.documentClass = DeathwatchActor;
-// CONFIG.Item.documentClass = DeathwatchItem;
-
-// Actors.registerSheet("deathwatch", DeathwatchActorSheet, { makeDefault: true });
-// Items.registerSheet("deathwatch", DeathwatchItemSheet, { makeDefault: true });
-
-// -----------------------------------------------------------
-// Exemplo: Hook de debug simples
-// -----------------------------------------------------------
-
-Hooks.on("createActor", (actor, options, userId) => {
-  if (game.settings.get("deathwatch", "enableDebug")) {
-    console.log(`Deathwatch | Novo actor criado: ${actor.name}`);
-  }
+Hooks.once("ready", function () {
+  console.log("Deathwatch | Pronto para jogar!");
 });

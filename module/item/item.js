@@ -1,17 +1,13 @@
 /**
- * Extend the basic Item with some very simple modifications.
- * @extends {Item}
+ * Classe base de Itens (armas, talentos, etc.)
  */
 export class DeathwatchItem extends Item {
-  /**
-   * Augment the basic Item data model with additional dynamic data.
-   */
-  prepareData() {
-    super.prepareData();
+  prepareDerivedData() {
+    const itemData = this.system;
 
-    // Get the Item's data
-    const itemData = this.data;
-    const actorData = this.actor ? this.actor.data : {};
-    const data = itemData.data;
+    // Exemplo: se for arma, calcula dano total
+    if (itemData.type === "weapon") {
+      itemData.damageTotal = `${itemData.damageDice || 1}d10 + ${itemData.bonus || 0}`;
+    }
   }
 }
